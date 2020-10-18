@@ -9,6 +9,7 @@ import requests
 import json
 import copy
 import time
+# import pytest
 
 
 class Board:
@@ -394,8 +395,8 @@ def post(url_, uuid, operations, swap):
 
 
 def test(url_get, url_post):
-    url_get = "http://47.102.118.1:8089/api/problem?stuid=031802624"
-    url_post = "http://47.102.118.1:8089/api/answer"
+    # url_get = "http://47.102.118.1:8089/api/problem?stuid=031802624"
+    # url_post = "http://47.102.118.1:8089/api/answer"
     resp_g = get(url_get)
     # print("第几步进行强制转换: ", resp_g['step'])
     # print("调换的图片编号: ", resp_g['swap'])
@@ -426,6 +427,8 @@ if __name__ == '__main__':
             print("成功解出", cnt, "题")
             break
         cnt += 1
+        if cnt > 100:
+            break
         time.sleep(1)
 
 

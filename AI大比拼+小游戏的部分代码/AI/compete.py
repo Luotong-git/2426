@@ -8,7 +8,7 @@ from io import BytesIO
 import requests
 import json
 import copy
-import time
+import pytest
 
 
 class Board:
@@ -274,7 +274,7 @@ def cut_image(image, n):
             # box = np.asarray(box)   # 将切片转换为numpy矩阵
             box_list.append(box)
     # image_list = [image.crop(box) for box in box_list]
-    # 保存为30*30像素
+    # 保存为10*10像素
     image_list = [image.crop(box).resize((10, 10)) for box in box_list]
     return image_list  # 返回numpy矩阵列表
 
@@ -490,7 +490,7 @@ def get_problem(url_):
 
 
 # 获取赛题，求解，并提交赛题，返回测试结果
-def test(url_get, url_post, teamid, token):
+def ai_test(url_get, url_post, teamid, token):
     challenge_resp = post_challenge(url_get, teamid, token)
     # print("challenge_resp: ", challenge_resp)
     # print("第几步进行强制转换: ", resp_g['step'])
@@ -525,21 +525,17 @@ if __name__ == '__main__':
     T = url+"/api/teamdetail/"  # 获取指定队伍的信息（T+teamid）
     P = url+"/api/team/problem/"  # 获取还未通过的题目（P+teamid）
 
-    teamid = 45
-    # teamid = 47  # 惟凝
-    # teamid = 54  # 霖涛
-    # teamid = 66  # 铭飞
-    # token =  "9ead8382-50db-4d3d-8a6d-fef755eb1c2a"  # 铭飞
-    # token = "c71f5f61-d994-49d1-8b2d-345b6fb15d55"  # 霖涛
-    # token = "2cbc804a-6178-409d-abb5-1c993ad889bd"  # 惟凝
-    token = "2c75ed75-f406-440e-8227-bca1f76f04d4"
-    letter = 'd'
-    exclude = 7
-    challenge = [[1, 2, 3],
-                 [5, 6, 0],
-                 [4, 8, 9]]
-    step = 11
-    swap = [8, 3]
+    # teamid = 45
+    teamid = 66
+    # token = "2c75ed75-f406-440e-8227-bca1f76f04d4"
+    token = "9ead8382-50db-4d3d-8a6d-fef755eb1c2a"
+    letter = 'g'
+    exclude = 1
+    challenge = [[4, 2, 0],
+                 [7, 5, 3],
+                 [8, 9, 6]]
+    step = 8
+    swap = [5, 4]
 
     question = get_question(L)  # 返回赛题列表
     print("question: \n", question)
@@ -567,13 +563,18 @@ if __name__ == '__main__':
     # url_get = "http://47.102.118.1:8089/api/problem?stuid=031802624"
     # url_post = "http://47.102.118.1:8089/api/answer"
     # resp_g = get(url_get)
-
-    for i in problem:
+    cnt = 0
+    for i in question:
         if i['author'] != teamid:
             uuid = i['uuid']
-            res = test(ST+uuid, SU, teamid, token)
+            res = ai_test(ST+uuid, SU, teamid, token)
             print(res)
             print("#######################################")
+            cnt += 1
+
+
+
+
 
 
 
